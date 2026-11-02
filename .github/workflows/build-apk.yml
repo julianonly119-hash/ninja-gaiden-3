@@ -34,11 +34,11 @@ jobs:
           unzip -q NinjaGaiden3RazorEdgeLauncher_Integrated.zip -d launcher
 
       - name: Build APK
-        run: |
-          gradle -p launcher :app:assembleDebug
+  run: |
+    gradle -p launcher/NinjaGaiden3RazorEdgeLauncher_Integrated :app:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: NinjaGaiden3-Launcher-APK
-          path: launcher/app/build/outputs/apk/debug/*.apk
+          path: launcher/NinjaGaiden3RazorEdgeLauncher_Integrated/app/build/outputs/apk/debug/*.apk
