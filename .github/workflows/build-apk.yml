@@ -1,0 +1,44 @@
+name: Build Ninja Gaiden Launcher APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "NinjaGaiden3RazorEdgeLauncher_Integrated.zip"
+      - ".github/workflows/build-apk.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: "8.9"
+
+      - name: Extract project
+        run: |
+          unzip -q NinjaGaiden3RazorEdgeLauncher_Integrated.zip -d launcher
+
+      - name: Build APK
+        run: |
+          gradle -p launcher :app:assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: NinjaGaiden3-Launcher-APK
+          path: launcher/app/build/outputs/apk/debug/*.apk
